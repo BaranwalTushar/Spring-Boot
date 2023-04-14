@@ -2,6 +2,8 @@ package com.tushar.myappvs.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
@@ -24,9 +26,38 @@ public class BookServices {
      // get single book by id
      public Book getBookById(int id){
         Book book= null;
-       book = list.stream().filter(e->e.getId()==id).findFirst().get();
+        try{
+         book = list.stream().filter(e->e.getId()==id).findFirst().get();
+        }
+        catch(Exception e){
+         e.printStackTrace();
+        }
+      
        return book;
 
      }
-    
-}
+     //adding the book
+     public Book addBook(Book b){
+      list.add(b);
+      return b;
+     }
+
+     //deleting the book
+     public void deletebook(int bookid){
+      list.stream().filter(e ->e.getId()!=bookid).collect(Collectors.toList());
+     }
+     //updating the  book
+      public void updatebook(Book b,int id){
+         list.stream().map(e->{
+            if(e.getId()==id){
+               e.setAuthor(b.getAuthor());
+               e.setTitle(b.getTitle());
+            }
+
+
+            return e;
+         }).collect(Collectors.toList());
+      }
+
+     }
+
