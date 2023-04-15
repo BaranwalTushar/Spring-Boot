@@ -1,33 +1,40 @@
 package com.tushar.myappvs.services;
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.tushar.myappvs.dao.BookRepository;
 import com.tushar.myappvs.entities.Book;
+
 
 @Component //to give permission to acces BookController class
 public class BookServices {
 
-    private static List<Book> list = new ArrayList<>();
-     static{
-        list.add(new Book(1,"java","XYZ"));
-        list.add(new Book(12,"python","ABC"));
-        list.add(new Book(34,"C language","MNO"));
+  @Autowired
+  private BookRepository bookRepository;
+  
+  
 
-     }
+   //  private static List<Book> list = new ArrayList<>();
+   //   static{
+   //      list.add(new Book(1,"java","XYZ"));
+   //      list.add(new Book(12,"python","ABC"));
+   //      list.add(new Book(34,"C language","MNO"));
+
+   //   }
      //get  all books information
      public List<Book> getAllBooks(){
-        return list;
+       List<Book> list = (List<Book>) this.bookRepository.findAll();
+       return list;
+      
      }
      // get single book by id
      public Book getBookById(int id){
         Book book= null;
         try{
-         book = list.stream().filter(e->e.getId()==id).findFirst().get();
+        // book = list.stream().filter(e->e.getId()==id).findFirst().get();
+       book =  this.bookRepository.findById(id);
         }
         catch(Exception e){
          e.printStackTrace();
@@ -38,25 +45,28 @@ public class BookServices {
      }
      //adding the book
      public Book addBook(Book b){
-      list.add(b);
-      return b;
+       Book result = bookRepository.save(b);
+      return result;
      }
 
      //deleting the book
      public void deletebook(int bookid){
-      list.stream().filter(e ->e.getId()!=bookid).collect(Collectors.toList());
+     // list.stream().filter(e ->e.getId()!=bookid).collect(Collectors.toList());
+     bookRepository.deleteById(bookid);
      }
      //updating the  book
       public void updatebook(Book b,int id){
-         list.stream().map(e->{
-            if(e.getId()==id){
-               e.setAuthor(b.getAuthor());
-               e.setTitle(b.getTitle());
-            }
+         // list.stream().map(e->{
+         //    if(e.getId()==id){
+         //       e.setAuthor(b.getAuthor());
+         //       e.setTitle(b.getTitle());
+         //    }
 
 
-            return e;
-         }).collect(Collectors.toList());
+         //    return e;
+         // }).collect(Collectors.toList());
+         b.setId(id);
+         bookRepository.save(b);
       }
 
      }

@@ -3,9 +3,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.actuate.autoconfigure.observation.ObservationProperties.Http;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tushar.myappvs.entities.Book;
 import com.tushar.myappvs.services.BookServices;
 
-@RestController
+@RestController //RestController is a Spring annotation that is used to build REST API in a declarative way
 public class BookController {
 
     // for accessing single entity
@@ -30,7 +28,7 @@ public class BookController {
 //     B.setTitle("java");
 //     B.setAuthor("xyz");
 //     return B;
-    @Autowired
+    @Autowired // The @Autowired annotation can be used to autowire bean
     private BookServices bookServices;
     //for multiple book calling using (ArrayList<>)
 
